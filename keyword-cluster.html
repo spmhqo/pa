@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Social Media Post Discovery Research</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient-start: #020617;
+      --bg-gradient-end: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #22d3ee;
+      --accent-hover: #67e8f9;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --code-bg: rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .sub-header {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .prompt-workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      background: var(--accent-primary);
+      color: #020617;
+      padding: 5px 16px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--accent-danger);
+      color: var(--accent-danger);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: var(--accent-danger);
+      color: white;
+    }
+
+    label {
+      display: block;
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .dynamic-input {
+      width: 100%;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      outline: none;
+      resize: vertical;
+      min-height: 100px;
+      transition: border-color 0.3s;
+    }
+
+    .dynamic-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 22px;
+      line-height: 1.6;
+      word-break: break-word;
+      max-height: 540px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar { width: 8px; }
+    .prompt-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .prompt-content::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      width: 100%;
+      text-decoration: none;
+      border: none;
+    }
+
+    .copy-btn {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-success);
+      border-color: var(--accent-success);
+      color: white;
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 40px;
+      width: 100%;
+      padding-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .sub-header { font-size: 0.95rem; }
+      .step-card { padding: 22px; }
+      .prompt-content { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Social Media Post Discovery Research</h1>
+      <p class="sub-header">(Based on Primary Keyword)</p>
+    </header>
+
+    <div class="prompt-workflow">
+      
+      <!-- Multiline Input Card 1 -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Input Data 1</span>
+          <button class="clear-btn" onclick="resetInput('inputPrimaryKeyword')">Reset</button>
+        </div>
+        <label for="inputPrimaryKeyword">Primary Keyword: [Insert Your Primary Keyword]</label>
+        <textarea id="inputPrimaryKeyword" class="dynamic-input" placeholder="Type or paste your Primary Keyword here..." oninput="updatePrompts()"></textarea>
+      </div>
+
+      <!-- Multiline Input Card 2 -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Input Data 2</span>
+          <button class="clear-btn" onclick="resetInput('inputTargetNiche')">Reset</button>
+        </div>
+        <label for="inputTargetNiche">Target Niche: [Insert Your Niche, if known]</label>
+        <textarea id="inputTargetNiche" class="dynamic-input" placeholder="Type or paste your Target Niche here (if known)..." oninput="updatePrompts()"></textarea>
+      </div>
+
+      <!-- Prompt Result Cards -->
+      <div id="promptsContainer">
+        <!-- Prompts injected by JavaScript -->
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = [
+      {
+        id: 1,
+        text: `Answer the following prompt in Bengali (India).
+
+Rules:
+- Use only Bengali (India).
+- Always address the reader as "আপনি".
+- Never use "তুমি" or "তুই".
+- Use a natural Kolkata-style conversational tone.
+- Use natural, modern Bengali (India).
+- Avoid Bangladeshi vocabulary, spelling, and expressions.
+
+PROMPT
+
+Role
+Act as a Social Media Research Strategist and Keyword Research Specialist.
+
+Objective
+Starting with the Primary Keyword provided below, identify relevant Secondary Keywords, Keyword Clusters, and Topic Clusters that I can use to search for existing social media posts and interact with their authors and audiences.
+
+My primary goal is to discover relevant social media conversations where I can participate meaningfully through comments, replies, and other appropriate interactions—not merely to improve SEO rankings or generate content ideas.
+
+Input
+
+Primary Keyword: [Insert Your Primary Keyword]
+
+Target Niche: [Insert Your Niche, if known]
+
+Instructions
+
+1. Interpret the Primary Keyword
+Identify the subject, underlying information need, likely search intent, and relevant discussion context associated with the Primary Keyword.
+
+Do not change the meaning or scope of the supplied Primary Keyword.
+
+2. Identify Secondary Keywords
+Identify closely related keywords and search phrases that people may use when discussing, asking questions about, expressing concerns about, or seeking solutions related to the Primary Keyword.
+
+Prioritize keywords that can help me discover existing social media conversations rather than keywords intended exclusively for SEO ranking.
+
+3. Build Keyword Clusters
+Group the identified keywords into meaningful clusters according to their shared subject, search intent, problem, goal, or discussion context.
+
+For each cluster, provide a descriptive name and identify its central discussion theme.
+
+Do not group keywords solely because they contain the same words. Explain the underlying relationship between the keywords in each cluster.
+
+4. Identify Topic Clusters
+Identify the broader topics and related subtopics surrounding the Primary Keyword.
+
+For each Topic Cluster, identify:
+- The central topic.
+- Its related subtopics.
+- The problems, questions, goals, or concerns people discuss within those subtopics.
+- The corresponding Secondary Keywords and Keyword Clusters.
+
+Distinguish Topic Clusters from Keyword Clusters. Do not treat a group of keywords as a group of content pages unless a content structure is explicitly relevant.
+
+5. Generate Social Media Search Queries
+Convert the most useful keywords and topic combinations into practical search queries that I can use to discover existing posts on social media platforms.
+
+Prioritize queries likely to reveal:
+- Questions and requests for advice.
+- People describing specific problems or challenges.
+- Discussions about methods, strategies, tools, and solutions.
+- Opinions, experiences, lessons learned, and case studies.
+- People seeking recommendations or comparing alternatives.
+- Relevant conversations where a helpful, meaningful reply would be appropriate.
+
+Where useful, include natural-language phrases, question-based searches, and platform-specific search syntax.
+
+Keep search queries focused and practical. Avoid generating multiple near-duplicates that are unlikely to reveal different conversations.
+
+6. Prioritize Search Opportunities
+Rank the search queries according to their likely usefulness for discovering relevant social media conversations.
+
+Explain the reasoning behind the prioritization. Distinguish between:
+- Direct relevance to the Primary Keyword.
+- Relevance to problems and questions associated with the topic.
+- Relevance to the broader niche.
+- Potential for meaningful interaction.
+
+Do not claim that a query has high search volume, high engagement, or strong conversion potential without supporting evidence.
+
+Output Format
+
+A. Primary Keyword Analysis
+Provide the Primary Keyword, its central topic, likely search intent, and underlying information need.
+
+B. Secondary Keywords
+Provide a table with these columns:
+1. Secondary Keyword
+2. Search Intent or Discussion Purpose
+3. Relevance to the Primary Keyword
+
+C. Keyword Clusters
+Provide a table with these columns:
+1. Cluster Name
+2. Central Discussion Theme
+3. Included Keywords
+4. Relationship to the Primary Keyword
+
+D. Topic Clusters
+Provide a table with these columns:
+1. Topic Cluster
+2. Central Topic
+3. Related Subtopics
+4. Relevant Problems or Questions
+5. Associated Keyword Clusters
+
+E. Social Media Search Queries
+Provide a table with these columns:
+1. Priority
+2. Search Query
+3. Intended Platform or Search Context
+4. Type of Posts Likely to Be Discovered
+5. Relevant Keyword or Topic Cluster
+
+F. Recommended Search List
+Finish with a concise, deduplicated list of the most useful search queries, ready to copy and paste into social media search fields or adapt for social media monitoring tools.
+
+Quality Rules
+- Preserve the meaning and scope of the original Primary Keyword.
+- Keep every keyword and topic relevant to the supplied niche and the Primary Keyword.
+- Distinguish actual keyword relationships from broader topical relationships.
+- Optimize the research for discovering existing social media posts, not merely generating content ideas.
+- Do not invent search-volume, engagement, or performance data.
+- If an input is missing, proceed using clearly stated assumptions instead of unnecessarily stopping the research.
+- Ensure that the final search list is practical, relevant, and free of redundant queries.`
+      }
+    ];
+
+    function createCards() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+      templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.innerHTML = `
+          <div class="step-header">
+            <span class="step-label">Prompt #${t.id}</span>
+          </div>
+          <div class="prompt-content" id="p${t.id}"></div>
+          <button class="btn copy-btn" onclick="copyText('p${t.id}', this)">
+            <span>Copy Prompt #${t.id}</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updatePrompts() {
+      const primaryKeyVal = document.getElementById('inputPrimaryKeyword').value.trim() || "[Insert Your Primary Keyword]";
+      const nicheVal = document.getElementById('inputTargetNiche').value.trim() || "[Insert Your Niche, if known]";
+
+      templates.forEach(t => {
+        let updatedText = t.text;
+        if (t.id === 1) {
+          updatedText = updatedText.split('[Insert Your Primary Keyword]').join(primaryKeyVal);
+          updatedText = updatedText.split('[Insert Your Niche, if known]').join(nicheVal);
+        }
+        document.getElementById(`p${t.id}`).innerText = updatedText;
+      });
+    }
+
+    function resetInput(fieldId) {
+      document.getElementById(fieldId).value = "";
+      updatePrompts();
+    }
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    window.onload = () => {
+      createCards();
+      updatePrompts();
+    };
+  </script>
+</body>
+</html>
